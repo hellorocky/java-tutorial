@@ -51,6 +51,13 @@ class LearnString {
         System.out.println(String.join("|", "W", "F", "Q"));//W|F|Q
 
         //构建字符串
+        //        //每次使用+连接字符串, 都会构建新的String对象, 当需要连接的字符串数量多的时候, 既耗时又浪费空间
+        //所以这个场景下应该使用StringBuilder, StringBuilder和StringBuffer接口一致, 只是StringBuffer是线程安全的, 但是慢;
+        //大部分场景构造字符串都是在一个线程中, 所以使用StringBuilder即可.
+        StringBuilder builder = new StringBuilder();
+        builder.append("ABC");
+        builder.append(" DEF");
+        String completedString = builder.toString();
 
 
     }
