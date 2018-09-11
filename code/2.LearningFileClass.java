@@ -10,6 +10,9 @@ public class Test {
     public static void main(String[] args) {
 //        props();
         create();
+        //递归遍历目录
+        String dir = "/Users/rocky/tmp/123";
+        listDir(dir);
     }
 
     public static void props() throws IOException {
@@ -46,5 +49,23 @@ public class Test {
         file.mkdir();
         file.mkdirs();
     }
+
+    private static void listDir(String dir) {
+            System.out.println(dir + "是目录");
+            File file = new File(dir);
+            File[] files = file.listFiles();
+            System.out.println("目录中文件/文件夹个数为: " + files.length);
+            for (File file1 : files) {
+    
+                if (file1.isDirectory()) {
+                    listDir(file1.getPath());
+                } else {
+                    System.out.println(file1.getPath());
+                }
+    
+            }
+        }
+
+
 }
 
