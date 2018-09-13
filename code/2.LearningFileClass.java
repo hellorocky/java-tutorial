@@ -69,3 +69,69 @@ public class Test {
 
 }
 
+
+
+import java.io.*;
+
+class LearnFile {
+    public static void main(String[] args) throws IOException {
+//        copyFile();
+//        readOnebyOne();
+        readText();
+    }
+
+    private void test1() throws IOException {
+        //递归遍历目录
+        String testFile = "/Users/rocky/tmp/123/test.txt";
+        File file = new File(testFile);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        String message = "我要学会Java编程!\n";
+        //追加的方式打开文件
+        OutputStream outputStream = new FileOutputStream(file, true);
+        outputStream.write(message.getBytes());
+        outputStream.close();
+
+    }
+    private static void copyFile() throws IOException {
+        String fileName = "/Users/rocky/tmp/test.py";
+        String newFileName = "/Users/rocky/tmp/test_1.py";
+        File file = new File(fileName);
+        File file1 = new File(newFileName);
+        if (file.exists()) {
+            InputStream inputStream = new FileInputStream(file);
+            OutputStream outputStream = new FileOutputStream(file1);
+            //每次读取的字节内容
+            int n;
+            while ((n = inputStream.read()) != -1) {
+                outputStream.write(n);
+            }
+            inputStream.close();
+            outputStream.close();
+        }
+    }
+    private static void readOnebyOne() throws IOException {
+        File file = new File("/Users/rocky/tmp/test.py");
+        InputStream inputStream = new FileInputStream(file);
+        int length = inputStream.available();
+        for (int i=0; i<length; i++) {
+            System.out.println((char) inputStream.read() + "\n");
+        }
+
+    }
+
+    private static void readText() throws IOException {
+        File file = new File("/Users/rocky/tmp/test.py");
+        InputStream inputStream = new FileInputStream(file);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader reader = new BufferedReader(inputStreamReader);
+        String data;
+        while ((data=reader.readLine()) != null) {
+            System.out.println(data);
+        }
+    }
+
+
+}
+
