@@ -11,7 +11,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="java-tutorial" target="1.5" />
-      <module name="javabasic" target="1.5" />
+      <module name="javabasic" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

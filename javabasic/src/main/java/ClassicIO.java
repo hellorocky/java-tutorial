@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * java-tutorial
@@ -9,6 +8,7 @@ import java.io.IOException;
  * <p>
  * File类只是用来处理文件/文件夹相关的操作, 不涉及文件内容的处理, 该类从JDK1.0就已经引入了.
  * 学习编程, 做好最快的办法就是自己去写代码, 去实践, 去总结.
+ * 经典的IO中, Java把所有的输入和输出都模拟成流,流中的数据只能顺序访问.不能回退访问, 如需回退, 可以使用pushback
  */
 public class ClassicIO {
     static final String homeDir = System.getProperty("user.home");
@@ -18,8 +18,11 @@ public class ClassicIO {
 //        deleteFile();
 //        createDir();
 //        getAttr();
-        File file = new File(homeDir);
-        iterDir(file);
+//        File file = new File(homeDir);
+//        iterDir(file);
+//        writeString();
+//        readStringBuffer();
+        randomReadWrite();
 
     }
 
@@ -74,7 +77,14 @@ public class ClassicIO {
 
     private static void iterDir(File file) {
         if (file.exists()) {
-            File[] dirList = file.listFiles();
+            //定义一个过滤器, 过滤结尾包含py的文件/文件夹
+            FileFilter fileFilter = new FileFilter() {
+                public boolean accept(File pathname) {
+                    return pathname.getName().endsWith("py");
+                }
+            };
+
+            File[] dirList = file.listFiles(fileFilter);
             if (dirList != null) {
                 for (File f : dirList) {
                     if (f.isFile()) {
@@ -87,8 +97,71 @@ public class ClassicIO {
         }
     }
 
+    private static void createTmp() throws IOException {
+        //创建临时文件, 未指定目录的话, 默认读取的System.out.println(System.getProperty("java.io.tmpdir"));
+        File tempFile = File.createTempFile("test", ".py");
+        //当JVM正常退出的时候删除文件.
+        tempFile.deleteOnExit();
+    }
 
+    private static void copyFile() throws IOException {
+        File sourceFile = new File(homeDir + "/tmp/source.py");
+        File destFile = new File(homeDir + "/tmp/dest.py");
+        FileInputStream fileInputStream = new FileInputStream(sourceFile);
+        FileOutputStream fileOutputStream = new FileOutputStream(destFile);
+        //每次读取的字节内容
+        int b;
+        while ((b = fileInputStream.read()) != -1) {
+            fileOutputStream.write(b);
+        }
+        fileInputStream.close();
+        fileOutputStream.close();
+    }
 
+    private static void setAttr() {
+        File file = new File(homeDir + "/tmp/abc/def/test.txt");
+        //设置文件属性, 用到的概率比较小.
+        file.setReadable(true, false);
+        file.setWritable(true, false);
+        file.setExecutable(true, false);
+    }
+
+    private static void writeString() throws IOException {
+        //字符流写文件
+        String welcome = "你好, Java!";
+        FileWriter fileWriter = new FileWriter(homeDir + "/tmp/test.txt");
+        //文件不存在的时候会自动创建
+        fileWriter.write(welcome);
+        //忘记关闭后会出现写不进去的现象.
+        fileWriter.close();
+    }
+
+    private static void readString() throws IOException {
+        FileReader fileReader = new FileReader(homeDir + "/tmp/test.txt");
+        //默认的读取char的方式
+        char[] chars = new char[100];
+        fileReader.read(chars);
+        System.out.println(chars);
+    }
+
+    private static void readStringBuffer() throws IOException {
+        FileReader fileReader = new FileReader(homeDir + "/tmp/test.txt");
+        //使用bufferedReader按行读取, 使用buffer以后, 会先读取到buffer缓冲区中,默认的buffer size是8192
+        BufferedReader bufferedReader = new BufferedReader(fileReader, 2048);
+        String line;
+        while ((line=bufferedReader.readLine()) != null) {
+            System.out.println(line);
+        }
+    }
+
+    private static void randomReadWrite() throws IOException {
+        RandomAccessFile file = new RandomAccessFile(homeDir + "/tmp/test.txt", "rw");
+        file.seek(8);
+        //获取游标的位置
+        long pointer = file.getFilePointer();
+        System.out.println(pointer);
+        System.out.println(file.readLine());
+    }
 
 
 }
