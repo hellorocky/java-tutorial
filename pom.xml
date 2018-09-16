@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>me.rockywu</groupId>
+	<artifactId>java-tutorial</artifactId>
+	<version>1.0.0-RELEASE</version>
+    <modules>
+        <module>javabasic</module>
+    </modules>
+    <packaging>pom</packaging> <!--parent模块一定配置成为pom-->
+
+	<name>java-tutorial</name>
+	<description>Java基础知识总结</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencyManagement>
+        <!--在采用子模块的方式开发的过程中, dependencyManagement只继承版本, 不继承依赖, 可以使用这一特点来统一管理版本依赖-->
+        <!--所有子模块的版本都统一记录在parent的pom中, parent只管理版本, 不引用任何依赖, 依赖统一写到子模块中-->
+        <!--由于parent模块不用构建成jar包, 所以一定不能有maven-plugin-build相关的配置, 这是踩过的坑-->
+        <dependencies>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+</project>
