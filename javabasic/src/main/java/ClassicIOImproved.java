@@ -1,9 +1,11 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
 
@@ -22,8 +24,9 @@ import java.util.Set;
 public class ClassicIOImproved {
     private static String homeDir = System.getProperty("user.home");
     public static void main(String[] args) throws IOException {
-        readFile();
+//        readFile();
 //        commonMethod();
+        writeFile();
     }
 
     private static void commonMethod() throws IOException {
@@ -44,7 +47,6 @@ public class ClassicIOImproved {
         Files.createFile(path);
         //复制文件
         Files.copy(path, destPath);
-        Set<PosixFilePermission> posixPermissions =  Files.getPosixFilePermissions(path);
     }
 
     private static void readFile() throws IOException {
@@ -54,6 +56,22 @@ public class ClassicIOImproved {
         while ((line=reader.readLine()) != null) {
             System.out.println(line);
         }
+    }
+
+    private static void writeFile() throws IOException {
+        Path path = Paths.get(homeDir + "/tmp/test.txt");
+        BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
+        //写文件会清空之前的记录.
+        writer.write("你好, Java, 你好!");
+        //添加换行
+        writer.newLine();
+        writer.flush();
+        writer.close();
+        //方法二
+        String contentToAppend = "好好学习天天向上!";
+        Files.write(path, contentToAppend.getBytes(), StandardOpenOption.APPEND);
+        //其他的参考https://www.baeldung.com/java-append-to-file
+
     }
 
     private static void createTemp() throws IOException {
