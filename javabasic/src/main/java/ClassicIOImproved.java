@@ -48,4 +48,10 @@ public class ClassicIOImproved {
 
 
     }
+
+    private static void createTemp() throws IOException {
+        //参考Stack Overflow整理一下删除文件的一些总结
+        //https://stackoverflow.com/questions/28752006/alternative-to-file-deleteonexit-in-java-nio
+        Path path = Files.createTempDirectory("prefix_string");
+    }
 }
