@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,7 +22,8 @@ import java.util.Set;
 public class ClassicIOImproved {
     private static String homeDir = System.getProperty("user.home");
     public static void main(String[] args) throws IOException {
-        commonMethod();
+        readFile();
+//        commonMethod();
     }
 
     private static void commonMethod() throws IOException {
@@ -42,16 +45,26 @@ public class ClassicIOImproved {
         //复制文件
         Files.copy(path, destPath);
         Set<PosixFilePermission> posixPermissions =  Files.getPosixFilePermissions(path);
-        posixPermissions.iterator();
+    }
 
-
-
-
+    private static void readFile() throws IOException {
+        Path path = Paths.get(homeDir + "/tmp/test.txt");
+        BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+        String line;
+        while ((line=reader.readLine()) != null) {
+            System.out.println(line);
+        }
     }
 
     private static void createTemp() throws IOException {
-        //参考Stack Overflow整理一下删除文件的一些总结
+        //在Java中要创建临时文件还需要自己处理关闭, 有3个方法
+        //1. 处理完以后主动关闭
+        //2. 添加addShutdownHook回掉函数, 看着挺复杂
+        //3. Path转换成File, 使用File.deleteOnExists()方法, 这个方法是在JVM正常退出的情况下会删除临时文件.不靠谱
+        //不如Python中的with语句
         //https://stackoverflow.com/questions/28752006/alternative-to-file-deleteonexit-in-java-nio
         Path path = Files.createTempDirectory("prefix_string");
+        Files.deleteIfExists(path);
+
     }
 }
