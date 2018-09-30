@@ -3,6 +3,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.http.Header;
 import org.apache.http.HeaderIterator;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -10,9 +11,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -191,4 +195,148 @@ class HttpbinBean {
     public void setUrl(String url) {
         this.url = url;
     }
+}
+
+/**
+ * @author RockyWu
+ * 最近整理了Java中发送HTTP请求的一些方法, 请教了一位公司的Java开发者, 他给指点了一下, 参考了他的代码, 这里简单总结一下RestTemplate的使用.
+ * RestTemplate是Spring 3.0的时候引入的, 现在Spring已经更新到了5.0, RestTemplate是同步请求, 现在已经不推荐使用了, 逐渐会被WebClient
+ * 来代替, 后续会写一写相关的使用教程.
+ *
+ *
+ *
+ *
+ */
+@Service
+public class Test {
+    @Autowired
+    RestTemplate restTemplate;
+
+    public static void main(String[] args) throws IOException {
+        doGet();
+    }
+
+    private static void doGet() {
+        RestTemplate restTemplate = new RestTemplate();
+        //默认情况下restTemplate会使用Jackson和Gson等来解析接口返回的json数据, 转化成自己定义的Class或者Bean等.spring没有把阿里的fastjson
+        //内置成为json的解析器, 所以如果想直接像如下的写法的话, 引入Jackson或者Gson即可, 该接口返回的内容结构如下:
+        //{
+        //  "type": "success",
+        //  "value": {
+        //    "id": 11,
+        //    "quote": "I have two hours today to build an app from scratch. @springboot to the rescue!"
+        //  }
+        //}
+        Quote quote = restTemplate.getForObject("http://gturnquist-quoters.cfapps.io/api/random", Quote.class);
+        String quoteStr = quote.getValue().getQuote();
+        System.out.println(quoteStr);
+
+        //国内很多开发者习惯上使用阿里的fastjson, 这时候可以不定义Bean, 直接使用fastjson中的JSONObject来接返回的对象, 如下, result对象中
+        //包含了很多方法可以获取想要的结果, 这种方式不是很确定, 只能解析一层, 如果嵌套的话就不合适了.
+        //还可以使用JSON.parseObject(response.getBody(), Quote.class)类似这样的方式来解析.
+        //从网上简单搜了一下fastjson和jackson的比较, 大致说fastjson扩展性差, 代码质量差, 性能快不是最根本的, 所以我自己的选择是不使用fastjson
+//        JSONObject result = restTemplate.getForObject("http://gturnquist-quoters.cfapps.io/api/random", JSONObject.class);
+//        System.out.println(result.get("type"));
+
+
+    }
+
+    private static void doPost(){
+        RestTemplate restTemplate = new RestTemplate();
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", "大白");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON_UTF8));
+        HttpEntity httpEntity = new HttpEntity(params, headers);
+        //下面的跟GET的类似了
+        Quote quote = restTemplate.postForObject("http://example.com", httpEntity, Quote.class);
+    }
+
+}
+
+class Value{
+    private String id;
+    private String quote;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getQuote() {
+        return quote;
+    }
+
+    public void setQuote(String quote) {
+        this.quote = quote;
+    }
+}
+
+class Quote{
+    private String type;
+    private Value value;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Value getValue() {
+        return value;
+    }
+
+    public void setValue(Value value) {
+        this.value = value;
+    }
+}
+
+/**
+ * 下面是自定义配置restTemplate, 默认情况下restTemplate使用的是SimpleClientHttpRequestFactory来构造HTTPclient, 使用的Java默认的HTTPURLconnection
+ * 一般生产环境中都会使用Apache HTTPclient, 下面是在springboot中配置restTemplate.
+ */
+@Configuration
+class RestTemplatConfiguration {
+
+    @Bean
+    public ClientHttpRequestFactory clientHttpRequestFactory() {
+        //下面都是Apache HTTPclient的相关配置, 支持很多配置, 这里为了演示只是简单的配置了几项.
+        RequestConfig config = RequestConfig.custom()
+                //连接目标服务器超时时间
+                .setConnectTimeout(10000)
+                //读取目标服务器数据超时时间
+                .setSocketTimeout(30000)
+                //从连接池获取连接的超时时间
+                .setConnectionRequestTimeout(10000)
+                .build();
+        //HTTP Client构造器
+        HttpClientBuilder builder = HttpClientBuilder.create()
+                .setDefaultRequestConfig(config)
+                .setRetryHandler(new DefaultHttpRequestRetryHandler(5, false));
+        //构造HTTP Client
+        HttpClient httpClient = builder.build();
+
+        //最终使用的是spring提供的方法(该方法专门为ApacheHTTPclient封装)返回一个ClientHttpRequestFactory供该类的第二个方法使用.
+        return new HttpComponentsClientHttpRequestFactory(httpClient);
+    }
+
+    /**
+     * @param clientHttpRequestFactory
+     * @return
+     * Spring Boot初始化的时候会加载下面的Bean, 这样就达到了重新配置restTemplate的目的.
+     */
+    @Bean
+    public RestTemplate restTemplate(ClientHttpRequestFactory clientHttpRequestFactory) {
+        return new RestTemplate(clientHttpRequestFactory);
+    }
+
+
 }
