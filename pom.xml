@@ -25,7 +25,21 @@
         <!--所有子模块的版本都统一记录在parent的pom中, parent只管理版本, 不引用任何依赖, 依赖统一写到子模块中-->
         <!--由于parent模块不用构建成jar包, 所以一定不能有maven-plugin-build相关的配置, 这是踩过的坑-->
         <dependencies>
-
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>2.0.5.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>5.1.0.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.9.7</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>

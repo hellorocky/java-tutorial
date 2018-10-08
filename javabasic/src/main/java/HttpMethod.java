@@ -2,7 +2,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.Header;
 import org.apache.http.HeaderIterator;
-import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.fluent.Request;
@@ -14,6 +13,16 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 import java.util.Collections;
@@ -69,7 +78,7 @@ public class HttpMethod {
                 System.out.println(headerIterator.nextHeader().getName());
             }
             //获取body内容
-            HttpEntity httpEntity = response.getEntity();
+            org.apache.http.HttpEntity httpEntity = response.getEntity();
             if (httpEntity != null) {
                 InputStream inputStream = httpEntity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -120,7 +129,7 @@ public class HttpMethod {
         try {
 
             //获取body内容
-            HttpEntity httpEntity = response.getEntity();
+            org.apache.http.HttpEntity httpEntity = response.getEntity();
             if (httpEntity != null) {
                 InputStream inputStream = httpEntity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
@@ -150,7 +159,7 @@ public class HttpMethod {
         CloseableHttpResponse response = httpclient.execute(httpGet);
         try {
             //获取body内容
-            HttpEntity httpEntity = response.getEntity();
+            org.apache.http.HttpEntity httpEntity = response.getEntity();
             if (httpEntity != null) {
                 InputStream inputStream = httpEntity.getContent();
 
@@ -208,7 +217,7 @@ class HttpbinBean {
  *
  */
 @Service
-public class Test {
+class Test {
     @Autowired
     RestTemplate restTemplate;
 
