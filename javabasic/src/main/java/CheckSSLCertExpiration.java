@@ -26,7 +26,7 @@ public class CheckSSLCertExpiration {
     /**
      * 获取网站域名的SSL证书并查看该网站证书的过期时间, 如果距离当前时间不足指定天数的时候会提示.
      *
-     * @param hostname 域名, 比如app.bbobo.com
+     * @param hostname 域名, 比如app.duoduo.com
      * @param port     端口, 默认使用443即可
      * @param day      距离过期几天的时候提醒管理员
      */
