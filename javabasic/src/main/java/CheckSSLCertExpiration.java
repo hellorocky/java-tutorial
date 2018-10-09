@@ -20,7 +20,7 @@ import java.util.Date;
  */
 public class CheckSSLCertExpiration {
     public static void main(String[] args) throws Exception {
-        checkSSLCert("api.bbobo.com", 443, 300);
+        checkSSLCert("api.douyin.com", 443, 300);
     }
 
     /**
