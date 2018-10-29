@@ -55,6 +55,10 @@ public class Test {
         //字符串转成时间对象
         CharSequence timeSeq = "2017-09-28 17:07:05";
         LocalDateTime ldt = LocalDateTime.parse(timeSeq, df);
+        //LocalDateTime转成时间戳, 比如下面是获取当天0点的时间戳
+        LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0,0,0));
+        System.out.println(localDateTime.toInstant(ZoneOffset.of("+8")).getEpochSecond()); //long, 1540742400
+        System.out.println(localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli()); //long, 1540742400000
 
 
     }
