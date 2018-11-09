@@ -45,6 +45,8 @@ public class ClassicIOImproved {
         Files.isSameFile(path, absPath);
         //创建文件, 目录不存在的时候会抛出异常, 而且没发现有类似mkdirs的方法.文件存在也会抛异常.
         Files.createFile(path);
+        //判断是否存在
+        Files.exists(path);
         //复制文件
         Files.copy(path, destPath);
     }
