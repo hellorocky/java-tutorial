@@ -27,7 +27,7 @@ public class LearningCodec {
         //返回加密后的字符串
         System.out.println(base64.encodeAsString("RockyWu".getBytes()));
         //返回解密后的字符串
-        System.out.println(new String(base64.decode("Um9ja3lXdQ=="), "UTF-8"));
+        System.out.println(new String(base64.decode("MTc2MDA0NjY3Mjk6c2RzZDEyMTIxMjEyMQ=="), "UTF-8"));
     }
 
     static void md5 (){
@@ -62,8 +62,8 @@ public class LearningCodec {
 
     public static void main(String[] args) throws UnsupportedEncodingException {
 //        base32();
-//        base64();
+        base64();
 //md5();
-bcrypt();
+//bcrypt();
     }
 }
