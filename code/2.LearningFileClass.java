@@ -1,12 +1,11 @@
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 
 /*
 * File类是Java中负责操作文件/文件夹的类, 具有很多方法, 但是不能操作具体的文件内容.
 *
 * */
-public class Test {
+class Test {
     public static void main(String[] args) {
 //        props();
         create();
@@ -71,14 +70,8 @@ public class Test {
 
 
 
-import java.io.*;
 
 class LearnFile {
-    public static void main(String[] args) throws IOException {
-//        copyFile();
-//        readOnebyOne();
-        readText();
-    }
 
     private void test1() throws IOException {
         //递归遍历目录

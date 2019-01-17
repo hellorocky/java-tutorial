@@ -1,4 +1,4 @@
-public class Test {
+class PrimitiveType {
     static final String name = "RockyWu";  //类常量, 在main方法外面声明, 该类下面的所有方法都可以使用, 但是别的类不能使用
     public static final double PI = 3.14;  //类常量, 在main方法外面声明, 该类下面的所有方法都可以使用, 别的类也能使用
     //枚举类型
