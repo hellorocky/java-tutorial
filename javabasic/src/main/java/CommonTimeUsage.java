@@ -4,7 +4,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class Test {
+class Test {
     public static void main(String[] args) {
         useLocalDateTime();
     }
