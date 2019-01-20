@@ -62,8 +62,8 @@ public class LearningCodec {
 
     public static void main(String[] args) throws UnsupportedEncodingException {
 //        base32();
-        base64();
+//        base64();
 //md5();
-//bcrypt();
+bcrypt();
     }
 }
