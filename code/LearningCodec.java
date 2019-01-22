@@ -1,3 +1,5 @@
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Base64;
@@ -65,5 +67,9 @@ public class LearningCodec {
 //        base64();
 //md5();
 bcrypt();
+        JSONObject jsonObject = JSON.parseObject("");
+        jsonObject.getString("name");
+        jsonObject.getInteger("age");
+        jsonObject.getBoolean("is_active");
     }
 }
