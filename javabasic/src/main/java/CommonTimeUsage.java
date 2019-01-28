@@ -57,6 +57,7 @@ class Test {
         LocalDateTime ldt = LocalDateTime.parse(timeSeq, df);
         //LocalDateTime转成时间戳, 比如下面是获取当天0点的时间戳
         LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0,0,0));
+        LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.now()).atOffset(ZoneOffset.of("+8")).toLocalDateTime();
         System.out.println(localDateTime.toInstant(ZoneOffset.of("+8")).getEpochSecond()); //long, 1540742400
         System.out.println(localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli()); //long, 1540742400000
 
