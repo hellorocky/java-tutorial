@@ -60,7 +60,12 @@ class Test {
         LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.now()).atOffset(ZoneOffset.of("+8")).toLocalDateTime();
         System.out.println(localDateTime.toInstant(ZoneOffset.of("+8")).getEpochSecond()); //long, 1540742400
         System.out.println(localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli()); //long, 1540742400000
-
-
     }
+    
+    static void localDateTime2Timestamp() {
+        LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.now()).atOffset(ZoneOffset.of("+8")).toLocalDateTime();
+        //数据库中建议使用DateTime类型, 对应Java的Timestamp
+        Timestamp ts = Timestamp.valueof(localDateTime);
+    }
+
 }
