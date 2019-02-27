@@ -61,11 +61,18 @@ class Test {
         System.out.println(localDateTime.toInstant(ZoneOffset.of("+8")).getEpochSecond()); //long, 1540742400
         System.out.println(localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli()); //long, 1540742400000
     }
-    
+    //获取java.sql.Timestamp时间戳 
     static void localDateTime2Timestamp() {
         LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.now()).atOffset(ZoneOffset.of("+8")).toLocalDateTime();
         //数据库中建议使用DateTime类型, 对应Java的Timestamp
         Timestamp ts = Timestamp.valueof(localDateTime);
+    }
+    //整型时间戳转格式化字符串
+    static void timestamp2String() {
+        Integer timestamp = 1234567;
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String time = df.format(LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.systemDefault()));
+        System.out.println(time);
     }
 
 }
