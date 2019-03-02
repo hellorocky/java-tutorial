@@ -64,7 +64,7 @@ class Test {
     //获取java.sql.Timestamp时间戳 
     static void localDateTime2Timestamp() {
         LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.now()).atOffset(ZoneOffset.of("+8")).toLocalDateTime();
-        //数据库中建议使用DateTime类型, 对应Java的Timestamp
+        //数据库中建议使用DateTime类型, 存储范围更大9999, 不建议数据库存储timestamp格式, 因为数据库会根据时区进行处理, 对应Java的Timestamp
         Timestamp ts = Timestamp.valueof(localDateTime);
     }
     //整型时间戳转格式化字符串
