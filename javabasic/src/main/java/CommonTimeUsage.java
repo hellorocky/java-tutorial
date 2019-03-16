@@ -48,11 +48,13 @@ class Test {
 
     static void useLocalDateTime() {
         //相当于上面2个的结合, 能获取上面的所有属性
+        //如果要解析的字符串中包含字母T等, 使用小括号 DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         //时间对象转成字符串
         LocalDateTime time = LocalDateTime.now();
         String localTime = df.format(time);
         //字符串转成时间对象
+        //如果要解析的字符串中包含字母T等, 使用小括号 CharSequence timeSeq = "2017-09-28T17:07:05Z";
         CharSequence timeSeq = "2017-09-28 17:07:05";
         LocalDateTime ldt = LocalDateTime.parse(timeSeq, df);
         //LocalDateTime转成时间戳, 比如下面是获取当天0点的时间戳
