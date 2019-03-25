@@ -76,5 +76,9 @@ class Test {
         String time = df.format(LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.systemDefault()));
         System.out.println(time);
     }
+    public static Timestamp getCurrentTimestamp(){
+        LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.now()).atOffset(ZoneOffset.of("+8")).toLocalDateTime();
+        return Timestamp.valueOf(localDateTime);
+    }
 
 }
